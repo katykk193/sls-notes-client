@@ -8,8 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.5.3",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "@ant-design/icons": "^4.2.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "antd": "^4.6.2",
+    "axios": "^0.20.0",
+    "framer-motion": "^2.6.5",
+    "next": "^9.5.3",
+    "react": "^16.13.1",
+    "react-card-flip": "^1.0.11",
+    "react-dom": "^16.13.1",
+    "tailwindcss": "^1.7.6"
   }
 }
