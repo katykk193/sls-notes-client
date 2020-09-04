@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
+import axios from 'axios';
 import { Input, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -18,8 +20,33 @@ const NewCard = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const options = {
+      headers: {
+        app_user_id: 'test_user',
+        app_user_name: 'Test User'
+      }
+    };
+
+    try {
+      const response = await axios.post(
+        `${process.env.API}/note`,
+        {
+          Item: {
+            title: question,
+            content: answer,
+            cat: 'general'
+          }
+        },
+        options
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    Router.push('/');
   };
 
   return (
@@ -61,7 +88,10 @@ const NewCard = () => {
       </div>
 
       <div className="flex justify-center">
-        <Button className="shadow-2xl rounded flex justify-between items-center font-semibold">
+        <Button
+          htmlType="submit"
+          className="shadow-2xl rounded flex justify-between items-center font-semibold"
+        >
           <FontAwesomeIcon icon={faPlus} />
           <div className="ml-2">Add Card</div>
         </Button>

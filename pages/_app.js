@@ -2,23 +2,7 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 import '../styles/globals.css';
 import '../styles/app.css';
-
-const easing = [0.6, -0.05, 0.01, 0.99];
-
-const fadeInUp = {
-  initial: {
-    y: 60,
-    opacity: 0
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: easing
-    }
-  }
-};
+import { fadeInUp } from '../animations';
 
 const MyApp = ({ Component, pageProps, router }) => {
   return (
