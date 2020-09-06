@@ -25,3 +25,7 @@ body {
   overflow: hidden;
   font-family: 'Lato', sans-serif;
 }
+
+button:focus {
+  outline: 0;
+}

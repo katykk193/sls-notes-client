@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import '../styles/globals.css';
 import '../styles/app.css';
 import { fadeInUp } from '../animations';
+import { GlobalProvider } from '../context/GlobalState';
 
 const MyApp = ({ Component, pageProps, router }) => {
   return (
@@ -23,7 +24,9 @@ const MyApp = ({ Component, pageProps, router }) => {
         animate="animate"
         variants={fadeInUp}
       >
-        <Component {...pageProps} />
+        <GlobalProvider>
+          <Component {...pageProps} />
+        </GlobalProvider>
       </motion.div>
     </>
   );

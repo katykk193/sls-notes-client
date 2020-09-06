@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalState';
 import Link from 'next/link';
 import Card from '../components/Card';
 import ReactCardFlip from 'react-card-flip';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,26 +10,27 @@ import {
   faChevronLeft,
   faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
-import { fadeInRight, buttonHover } from '../animations';
+import { fadeInUp, fadeInRight, fadeInLeft, buttonHover } from '../animations';
+import { loadCards } from '../services';
+import Modal from '../components/Modal';
+import LoadingCard from '../components/LoadingCard';
 
 const Home = () => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [currentNo, setCurrentNo] = useState(1);
-  const [cards, setCards] = useState([]);
+  const [variants, setVariants] = useState(fadeInUp);
+
+  const { currentNo, updateCurrentNo, cards, updateCards } = useContext(
+    GlobalContext
+  );
 
   useEffect(() => {
-    loadCards();
-  }, []);
+    console.log(cards.length);
+    getCards();
+  }, [cards.length]);
 
-  const loadCards = async () => {
-    const response = await axios.get(`${process.env.API}/notes`, {
-      headers: {
-        app_user_id: `test_user`,
-        app_user_name: `test user`,
-        contentType: 'application/json'
-      }
-    });
-    setCards(response.data.Items);
+  const getCards = async () => {
+    const res = await loadCards();
+    updateCards(res);
   };
 
   const showAnswer = () => {
@@ -38,17 +39,20 @@ const Home = () => {
 
   const handleClickLeft = () => {
     const newCurrentNo = currentNo === 1 ? cards.length : currentNo - 1;
-    setCurrentNo(newCurrentNo);
+    updateCurrentNo(newCurrentNo);
+    setVariants(fadeInRight);
   };
 
   const handleClickRight = () => {
     const newCurrentNo = currentNo === cards.length ? 1 : currentNo + 1;
-    setCurrentNo(newCurrentNo);
+    updateCurrentNo(newCurrentNo);
+    setVariants(fadeInLeft);
   };
 
   return (
     <>
-      <div className="flex sm:justify-center items-center relative mb-8 text-white">
+      <Modal />
+      <div className="container flex sm:justify-center items-center relative mb-8 text-white">
         <h1 className="font-semibold text-xl sm:text-4xl text-white">
           Flash Cards
         </h1>
@@ -65,47 +69,49 @@ const Home = () => {
         </Link>
       </div>
 
-      <motion.div
-        exit={{ opacity: 0 }}
-        initial="initial"
-        animate="animate"
-        variants={fadeInRight}
-      >
-        <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
-          <Card
-            showAnswer={showAnswer}
-            content={cards.length ? cards[currentNo - 1].title : 'No cards'}
-            noteId={cards.length ? cards[currentNo - 1].timestamp : ''}
-          />
-          <Card
-            showAnswer={showAnswer}
-            content={cards.length ? cards[currentNo - 1].content : 'No cards'}
-            noteId={cards.length ? cards[currentNo - 1].note_id : ''}
-          />
-        </ReactCardFlip>
-      </motion.div>
+      {cards.length ? (
+        <>
+          <motion.div
+            exit={{ opacity: 0 }}
+            initial="initial"
+            animate="animate"
+            variants={variants}
+          >
+            <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+              <Card
+                showAnswer={showAnswer}
+                card={cards[currentNo - 1]}
+                question
+              />
+              <Card showAnswer={showAnswer} card={cards[currentNo - 1]} />
+            </ReactCardFlip>
+          </motion.div>
 
-      <div className="mt-8 flex justify-center items-center text-xl text-white">
-        <motion.button
-          variants={buttonHover}
-          whileHover="hover"
-          className="mr-5 border rounded-full h-10 w-10 text-white text-md"
-          onClick={handleClickLeft}
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </motion.button>
-        <div>{currentNo}</div>
-        <div>/</div>
-        <div>{cards.length}</div>
-        <motion.button
-          variants={buttonHover}
-          whileHover="hover"
-          className="ml-5 border rounded-full h-10 w-10 text-white text-md"
-          onClick={handleClickRight}
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </motion.button>
-      </div>
+          <div className="mt-8 flex justify-center items-center text-xl text-white">
+            <motion.button
+              variants={buttonHover}
+              whileHover="hover"
+              className="mr-5 border rounded-full h-10 w-10 text-white text-md"
+              onClick={handleClickLeft}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </motion.button>
+            <div>{currentNo}</div>
+            <div>/</div>
+            <div>{cards.length}</div>
+            <motion.button
+              variants={buttonHover}
+              whileHover="hover"
+              className="ml-5 border rounded-full h-10 w-10 text-white text-md"
+              onClick={handleClickRight}
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
+            </motion.button>
+          </div>
+        </>
+      ) : (
+        <LoadingCard />
+      )}
     </>
   );
 };

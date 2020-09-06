@@ -1,26 +1,43 @@
-.card {
-  height: 300px;
+.container {
   width: 50vw;
+}
+.card {
+  width: 50vw;
+  height: 300px;
 }
 
 @media screen and (max-width: 800px) {
   .card {
     width: 80vw;
   }
+  .container {
+    width: 80vw;
+  }
 }
 
-.navigation {
-  display: flex;
-  margin: 20px 0;
+.bg-primary {
+  background: linear-gradient(
+    90deg,
+    rgba(243, 70, 110, 0.9780287114845938) 0%,
+    rgba(219, 71, 206, 1) 60%,
+    rgba(82, 71, 239, 1) 100%
+  );
 }
 
-.navigation .nav-button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-size: 16px;
+.border-primary {
+  border-color: linear-gradient(
+    90deg,
+    rgba(243, 70, 110, 0.9780287114845938) 0%,
+    rgba(219, 71, 206, 1) 60%,
+    rgba(82, 71, 239, 1) 100%
+  );
 }
 
-.navigation p {
-  margin: 0 25px;
+.color-primary {
+  color: linear-gradient(
+    90deg,
+    rgba(243, 70, 110, 0.9780287114845938) 0%,
+    rgba(219, 71, 206, 1) 60%,
+    rgba(82, 71, 239, 1) 100%
+  );
 }

@@ -56,3 +56,24 @@ export const buttonHover = {
     }
   }
 };
+
+export const backdrop = {
+  initial: {
+    opacity: 0
+  },
+  animate: {
+    opacity: 1
+  }
+};
+
+export const modal = {
+  initial: {
+    y: '-100vh',
+    opacity: 0
+  },
+  animate: {
+    y: '0',
+    opacity: 1,
+    transition: { delay: 0.5 }
+  }
+};

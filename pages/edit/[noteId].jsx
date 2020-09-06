@@ -6,7 +6,7 @@ import { Input, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const NewCard = () => {
+const EditCard = () => {
   const [state, setState] = useState({
     question: '',
     answer: ''
@@ -32,7 +32,7 @@ const NewCard = () => {
     };
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         `${process.env.API}/note`,
         {
           Item: {
@@ -101,4 +101,4 @@ const NewCard = () => {
   );
 };
 
-export default NewCard;
+export default EditCard;

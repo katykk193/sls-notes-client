@@ -1,0 +1,4 @@
+export const actionTypes = {
+  UPDATE_CURRENT_NO: 'UPDATE_CURRENT_NO',
+  UPDATE_SHOW_MODAL: 'UPDATE_SHOW_MODAL'
+};
