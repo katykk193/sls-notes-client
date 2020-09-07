@@ -13,7 +13,7 @@ export const loadCards = async () => {
     return response.data.Items;
   } catch (err) {
     console.log(err.response ? err.response.data.error : err.toString());
-    return null;
+    return { errMsg: err.response ? err.response.data.error : err.toString() };
   }
 };
 

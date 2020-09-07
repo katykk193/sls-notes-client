@@ -2,7 +2,6 @@ import { useState, useContext } from 'react';
 import Link from 'next/link';
 import { SyncOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { buttonHover } from '../animations';
@@ -69,7 +68,7 @@ const Card = ({
             <motion.button
               variants={buttonHover}
               whileHover="hover"
-              className="absolute left-0 bottom-0 mx-4 my-3 text-2xl"
+              className="absolute left-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
               onClick={(e) => showConfirm(e)}
             >
               <FontAwesomeIcon icon={faTrash} />
@@ -80,7 +79,7 @@ const Card = ({
               <motion.button
                 variants={buttonHover}
                 whileHover="hover"
-                className="absolute right-0 bottom-0 mx-4 my-3 text-2xl"
+                className="absolute right-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
               >
                 <FontAwesomeIcon icon={faEdit} />
               </motion.button>

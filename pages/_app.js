@@ -4,6 +4,7 @@ import '../styles/globals.css';
 import '../styles/app.css';
 import { fadeInUp } from '../animations';
 import { GlobalProvider } from '../context/GlobalState';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const MyApp = ({ Component, pageProps, router }) => {
   return (
@@ -25,7 +26,9 @@ const MyApp = ({ Component, pageProps, router }) => {
         variants={fadeInUp}
       >
         <GlobalProvider>
-          <Component {...pageProps} />
+          <ErrorBoundary>
+            <Component {...pageProps} />
+          </ErrorBoundary>
         </GlobalProvider>
       </motion.div>
     </>
