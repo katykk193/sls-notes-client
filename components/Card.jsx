@@ -1,12 +1,12 @@
 import { useState, useContext } from 'react';
-import Link from 'next/link';
+import Router from 'next/router';
 import { SyncOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { buttonHover } from '../animations';
 import { GlobalContext } from '../context/GlobalState';
-import { loadCards, deleteCard } from '../services';
+import { getCards, deleteCard } from '../services';
 import { Modal, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
@@ -15,7 +15,7 @@ const { confirm } = Modal;
 const Card = ({
   showAnswer,
   question,
-  card: { title, content, timestamp }
+  card: { title, content, timestamp, note_id }
 }) => {
   const [loading, setLoading] = useState(false);
   const { updateCards } = useContext(GlobalContext);
@@ -41,13 +41,18 @@ const Card = ({
     e.stopPropagation();
     setLoading(true);
     await deleteCard(timestamp);
-    const res = await loadCards();
+    const res = await getCards();
     updateCards(res);
     setLoading(false);
   };
 
   const handleCancel = (e) => {
     e.stopPropagation();
+  };
+
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    Router.push(`/edit/${note_id}`);
   };
 
   return (
@@ -69,21 +74,20 @@ const Card = ({
               variants={buttonHover}
               whileHover="hover"
               className="absolute left-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
-              onClick={(e) => showConfirm(e)}
+              onClick={showConfirm}
             >
               <FontAwesomeIcon icon={faTrash} />
             </motion.button>
           ) : null}
           {question ? (
-            <Link href="/edit">
-              <motion.button
-                variants={buttonHover}
-                whileHover="hover"
-                className="absolute right-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
-              >
-                <FontAwesomeIcon icon={faEdit} />
-              </motion.button>
-            </Link>
+            <motion.button
+              variants={buttonHover}
+              whileHover="hover"
+              className="absolute right-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
+              onClick={handleEdit}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </motion.button>
           ) : null}
         </div>
       </div>

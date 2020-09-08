@@ -1,102 +1,113 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
-import axios from 'axios';
-import { Input, Button } from 'antd';
+import Router, { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import { Input, Spin } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { getCard, editCard } from '../../services';
+import useCrash from '../../components/useCrash';
+import { buttonHover } from '../../animations';
 
 const EditCard = () => {
-  const [state, setState] = useState({
-    question: '',
-    answer: ''
-  });
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [card, setCard] = useState({});
 
-  const { question, answer } = state;
+  const router = useRouter();
+  const setCrash = useCrash();
 
-  const handleChange = (value) => (e) => {
-    setState({
-      ...state,
-      [value]: e.target.value
-    });
+  useEffect(() => {
+    loadCard();
+  }, []);
+
+  const loadCard = async () => {
+    const res = await getCard(router.query.noteId);
+    setQuestion(res.title);
+    setAnswer(res.content);
+    setCard(res);
+    setLoading(false);
+  };
+
+  const handleQuestionChange = (e) => {
+    setQuestion(e.target.value);
+  };
+  const handleAnswerChange = (e) => {
+    setAnswer(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const options = {
-      headers: {
-        app_user_id: 'test_user',
-        app_user_name: 'Test User'
-      }
-    };
+    const newCard = { ...card, title: question, content: answer };
 
-    try {
-      const response = await axios.patch(
-        `${process.env.API}/note`,
-        {
-          Item: {
-            title: question,
-            content: answer,
-            cat: 'general'
-          }
-        },
-        options
-      );
-    } catch (err) {
-      console.log(err);
+    setCard(newCard);
+
+    const res = await editCard(newCard);
+    if (res.errMsg) {
+      setCrash(true);
     }
 
+    setLoading(false);
     Router.push('/');
   };
 
   return (
     <form className="card" onSubmit={handleSubmit}>
       <div className="flex justify-center items-center font-semibold mb-5 text-white">
-        <h1 className="text-3xl text-white">Add New Card</h1>
+        <h1 className="text-3xl text-white">Edit Card</h1>
         <Link href="/">
-          <button className="border rounded-full w-10 h-10 ml-3 text-xl flex justify-center items-center rounded-xl ">
+          <motion.button
+            variants={buttonHover}
+            whileHover="hover"
+            className="border rounded-full w-10 h-10 ml-3 text-xl flex justify-center items-center rounded-xl "
+          >
             <FontAwesomeIcon icon={faTimes} />
-          </button>
+          </motion.button>
         </Link>
       </div>
+      <Spin spinning={loading}>
+        <div className="flex flex-col text-lg mb-5">
+          <label htmlFor="question" className="mb-2 font-semibold">
+            Question
+          </label>
+          <Input
+            id="question"
+            value={question}
+            placeholder="Enter question..."
+            onChange={handleQuestionChange}
+            className="rounded text-lg font-semibold shadow-xl text-gray-700"
+          ></Input>
+        </div>
 
-      <div className="flex flex-col text-lg mb-5">
-        <label htmlFor="question" className="mb-2">
-          Question
-        </label>
-        <Input.TextArea
-          id="question"
-          value={question}
-          placeholder="Enter question..."
-          onChange={handleChange('question')}
-          className="rounded text-lg font-semibold shadow-xl"
-        ></Input.TextArea>
-      </div>
+        <div className="flex flex-col text-lg mb-12">
+          <label htmlFor="answer" className="mb-2 font-semibold">
+            Answer
+          </label>
+          <Input.TextArea
+            rows={4}
+            id="answer"
+            value={answer}
+            placeholder="Enter Answer..."
+            onChange={handleAnswerChange}
+            className="rounded text-lg font-semibold shadow-xl text-gray-700"
+          ></Input.TextArea>
+        </div>
 
-      <div className="flex flex-col text-lg mb-12">
-        <label htmlFor="answer" className="mb-2">
-          Answer
-        </label>
-        <Input.TextArea
-          rows={4}
-          id="answer"
-          value={answer}
-          placeholder="Enter Answer..."
-          onChange={handleChange('answer')}
-          className="rounded text-lg font-semibold shadow-xl"
-        ></Input.TextArea>
-      </div>
-
-      <div className="flex justify-center">
-        <Button
-          htmlType="submit"
-          className="shadow-2xl rounded flex justify-between items-center font-semibold"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          <div className="ml-2">Add Card</div>
-        </Button>
-      </div>
+        <div className="flex justify-center text-white">
+          <motion.button
+            variants={buttonHover}
+            whileHover="hover"
+            htmlType="submit"
+            className="border px-4 py-2 rounded-full flex justify-center items-center font-semibold"
+          >
+            <FontAwesomeIcon icon={faCheck} />
+            <div className="ml-2">Update Card</div>
+          </motion.button>
+        </div>
+      </Spin>
     </form>
   );
 };

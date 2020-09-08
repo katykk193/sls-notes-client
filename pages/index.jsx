@@ -11,7 +11,7 @@ import {
   faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
 import { fadeInUp, fadeInRight, fadeInLeft, buttonHover } from '../animations';
-import { loadCards } from '../services';
+import { getCards } from '../services';
 import Modal from '../components/Modal';
 import LoadingCard from '../components/LoadingCard';
 import useCrash from '../components/useCrash';
@@ -28,13 +28,11 @@ const Home = () => {
 
   useEffect(() => {
     console.log(cards);
-    getCards();
+    loadCards();
   }, [cards.length]);
 
-  useEffect(() => {}, [currentNo]);
-
-  const getCards = async () => {
-    const res = await loadCards();
+  const loadCards = async () => {
+    const res = await getCards();
     if (res.errMsg) {
       setCrash(true);
     }
@@ -46,17 +44,17 @@ const Home = () => {
   };
 
   const handleClickLeft = () => {
+    setIsFlipped(false);
     const newCurrentNo = currentNo === 1 ? cards.length : currentNo - 1;
     updateCurrentNo(newCurrentNo);
     setVariants(fadeInRight);
-    setIsFlipped(false);
   };
 
   const handleClickRight = () => {
+    setIsFlipped(false);
     const newCurrentNo = currentNo === cards.length ? 1 : currentNo + 1;
     updateCurrentNo(newCurrentNo);
     setVariants(fadeInLeft);
-    setIsFlipped(false);
   };
 
   return (

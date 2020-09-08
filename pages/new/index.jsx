@@ -1,18 +1,24 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import axios from 'axios';
-import { Input, Button } from 'antd';
+import { Input, Spin } from 'antd';
+import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { addCard } from '../../services';
+import useCrash from '../../components/useCrash';
+import { buttonHover } from '../../animations';
 
 const NewCard = () => {
   const [state, setState] = useState({
     question: '',
-    answer: ''
+    answer: '',
+    loading: false
   });
 
-  const { question, answer } = state;
+  const { question, answer, loading } = state;
+
+  const setCrash = useCrash();
 
   const handleChange = (value) => (e) => {
     setState({
@@ -23,29 +29,20 @@ const NewCard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setState({
+      ...state,
+      loading: true
+    });
 
-    const options = {
-      headers: {
-        app_user_id: 'test_user',
-        app_user_name: 'Test User'
-      }
-    };
-
-    try {
-      const response = await axios.post(
-        `${process.env.API}/note`,
-        {
-          Item: {
-            title: question,
-            content: answer,
-            cat: 'general'
-          }
-        },
-        options
-      );
-    } catch (err) {
-      console.log(err);
+    const res = await addCard(question, answer);
+    if (res.errMsg) {
+      setCrash(true);
     }
+
+    setState({
+      ...state,
+      loading: false
+    });
 
     Router.push('/');
   };
@@ -55,48 +52,55 @@ const NewCard = () => {
       <div className="flex justify-center items-center font-semibold mb-5 text-white">
         <h1 className="text-3xl text-white">Add New Card</h1>
         <Link href="/">
-          <button className="border rounded-full w-10 h-10 ml-3 text-xl flex justify-center items-center rounded-xl ">
+          <motion.button
+            variants={buttonHover}
+            whileHover="hover"
+            className="border rounded-full w-10 h-10 ml-3 text-xl flex justify-center items-center rounded-xl "
+          >
             <FontAwesomeIcon icon={faTimes} />
-          </button>
+          </motion.button>
         </Link>
       </div>
+      <Spin spinning={loading}>
+        <div className="flex flex-col text-lg mb-5">
+          <label htmlFor="question" className="mb-2 font-semibold">
+            Question
+          </label>
+          <Input
+            id="question"
+            value={question}
+            placeholder="Enter question..."
+            onChange={handleChange('question')}
+            className="py-3 rounded text-lg font-semibold shadow-xl text-gray-700"
+          ></Input>
+        </div>
 
-      <div className="flex flex-col text-lg mb-5">
-        <label htmlFor="question" className="mb-2">
-          Question
-        </label>
-        <Input.TextArea
-          id="question"
-          value={question}
-          placeholder="Enter question..."
-          onChange={handleChange('question')}
-          className="rounded text-lg font-semibold shadow-xl"
-        ></Input.TextArea>
-      </div>
+        <div className="flex flex-col text-lg mb-12">
+          <label htmlFor="answer" className="mb-2 font-semibold">
+            Answer
+          </label>
+          <Input.TextArea
+            rows={4}
+            id="answer"
+            value={answer}
+            placeholder="Enter answer..."
+            onChange={handleChange('answer')}
+            className="rounded text-lg font-semibold shadow-xl text-gray-700"
+          ></Input.TextArea>
+        </div>
 
-      <div className="flex flex-col text-lg mb-12">
-        <label htmlFor="answer" className="mb-2">
-          Answer
-        </label>
-        <Input.TextArea
-          rows={4}
-          id="answer"
-          value={answer}
-          placeholder="Enter Answer..."
-          onChange={handleChange('answer')}
-          className="rounded text-lg font-semibold shadow-xl"
-        ></Input.TextArea>
-      </div>
-
-      <div className="flex justify-center">
-        <Button
-          htmlType="submit"
-          className="shadow-2xl rounded flex justify-between items-center font-semibold"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          <div className="ml-2">Add Card</div>
-        </Button>
-      </div>
+        <div className="flex justify-center text-white">
+          <motion.button
+            variants={buttonHover}
+            whileHover="hover"
+            htmlType="submit"
+            className="border px-4 py-2 rounded-full flex justify-center items-center font-semibold"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            <div className="ml-2">Add Card</div>
+          </motion.button>
+        </div>
+      </Spin>
     </form>
   );
 };
