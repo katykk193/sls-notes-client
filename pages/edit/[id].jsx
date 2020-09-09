@@ -23,7 +23,10 @@ const EditCard = () => {
   }, []);
 
   const loadCard = async () => {
-    const res = await getCard(router.query.noteId);
+    const res = await getCard(router.query.id);
+    if (res.errMsg) {
+      setCrash(true);
+    }
     setQuestion(res.title);
     setAnswer(res.content);
     setCard(res);
@@ -79,6 +82,7 @@ const EditCard = () => {
             placeholder="Enter question..."
             onChange={handleQuestionChange}
             className="rounded text-lg font-semibold shadow-xl text-gray-700"
+            required
           ></Input>
         </div>
 
@@ -93,6 +97,7 @@ const EditCard = () => {
             placeholder="Enter Answer..."
             onChange={handleAnswerChange}
             className="rounded text-lg font-semibold shadow-xl text-gray-700"
+            required
           ></Input.TextArea>
         </div>
 

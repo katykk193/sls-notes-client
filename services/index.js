@@ -17,10 +17,10 @@ export const getCards = async () => {
   }
 };
 
-export const getCard = async (noteId) => {
+export const getCard = async (id) => {
   try {
     const response = await axios.get(
-      `${process.env.API}/note/n/${noteId}`,
+      `${process.env.API}/note/n/${id}`,
       options
     );
     return response.data;

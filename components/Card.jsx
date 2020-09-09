@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Router from 'next/router';
 import { SyncOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { buttonHover } from '../animations';
+import { fadeInRight, buttonHover } from '../animations';
 import { GlobalContext } from '../context/GlobalState';
 import { getCards, deleteCard } from '../services';
 import { Modal, Spin } from 'antd';
@@ -18,6 +18,7 @@ const Card = ({
   card: { title, content, timestamp, note_id }
 }) => {
   const [loading, setLoading] = useState(false);
+
   const { updateCards } = useContext(GlobalContext);
 
   const showConfirm = (e) => {
@@ -58,11 +59,14 @@ const Card = ({
   return (
     <Spin spinning={loading}>
       <div className="card max-w-full">
-        <div
+        <motion.div
           onClick={showAnswer}
-          className="cursor-pointer h-full w-full flex justify-center items-center relative bg-white shadow-2xl rounded-md"
+          className="p-8 cursor-pointer h-full w-full flex justify-center items-center relative bg-white shadow-2xl rounded-md"
         >
-          <div className="flex absolute right-0 top-0 m-2 justify-center items-center font-bold text-gray-400 text-lg">
+          <div
+            onClick={() => setVariant(fadeInRight)}
+            className="flex absolute right-0 top-0 m-2 justify-center items-center font-bold text-gray-400 text-lg"
+          >
             <SyncOutlined />
             <div className="ml-1">Flip</div>
           </div>
@@ -89,7 +93,7 @@ const Card = ({
               <FontAwesomeIcon icon={faEdit} />
             </motion.button>
           ) : null}
-        </div>
+        </motion.div>
       </div>
     </Spin>
   );

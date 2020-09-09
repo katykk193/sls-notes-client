@@ -72,6 +72,7 @@ const NewCard = () => {
             placeholder="Enter question..."
             onChange={handleChange('question')}
             className="py-3 rounded text-lg font-semibold shadow-xl text-gray-700"
+            required
           ></Input>
         </div>
 
@@ -86,6 +87,7 @@ const NewCard = () => {
             placeholder="Enter answer..."
             onChange={handleChange('answer')}
             className="rounded text-lg font-semibold shadow-xl text-gray-700"
+            required
           ></Input.TextArea>
         </div>
 
