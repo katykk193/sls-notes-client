@@ -41,3 +41,7 @@
     rgba(82, 71, 239, 1) 100%
   );
 }
+
+.items-safe-center {
+  align-items: safe center;
+}

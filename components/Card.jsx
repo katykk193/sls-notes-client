@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import Router from 'next/router';
 import { SyncOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
@@ -58,17 +58,21 @@ const Card = ({
 
   return (
     <Spin spinning={loading}>
-      <div className="card max-w-full">
+      <div className="card h-full w-full">
         <div
           onClick={showAnswer}
-          className="p-8 cursor-pointer h-full w-full flex justify-center items-center relative bg-white shadow-2xl rounded-md"
+          className="my-5 p-8 cursor-pointer h-full w-full flex justify-center items-center relative bg-white shadow-2xl rounded-md"
         >
           <div className="flex absolute right-0 top-0 m-2 justify-center items-center font-bold text-gray-400 text-lg">
             <SyncOutlined />
             <div className="ml-1">Flip</div>
           </div>
 
-          <p className="sm:text-2xl">{question ? title : content}</p>
+          <div className="text-sm md:text-lg lg:text-xl h-full">
+            <div className="h-full flex items-safe-center overflow-y-auto">
+              {question ? title : content}
+            </div>
+          </div>
 
           {question ? (
             <motion.button
