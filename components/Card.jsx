@@ -4,7 +4,7 @@ import { SyncOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { fadeInRight, buttonHover } from '../animations';
+import { buttonHover } from '../animations';
 import { GlobalContext } from '../context/GlobalState';
 import { getCards, deleteCard } from '../services';
 import { Modal, Spin } from 'antd';
@@ -59,14 +59,11 @@ const Card = ({
   return (
     <Spin spinning={loading}>
       <div className="card max-w-full">
-        <motion.div
+        <div
           onClick={showAnswer}
           className="p-8 cursor-pointer h-full w-full flex justify-center items-center relative bg-white shadow-2xl rounded-md"
         >
-          <div
-            onClick={() => setVariant(fadeInRight)}
-            className="flex absolute right-0 top-0 m-2 justify-center items-center font-bold text-gray-400 text-lg"
-          >
+          <div className="flex absolute right-0 top-0 m-2 justify-center items-center font-bold text-gray-400 text-lg">
             <SyncOutlined />
             <div className="ml-1">Flip</div>
           </div>
@@ -93,7 +90,7 @@ const Card = ({
               <FontAwesomeIcon icon={faEdit} />
             </motion.button>
           ) : null}
-        </motion.div>
+        </div>
       </div>
     </Spin>
   );

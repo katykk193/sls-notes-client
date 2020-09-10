@@ -15,18 +15,6 @@ export const fadeInUp = {
   }
 };
 
-export const fadeInLeft = {
-  animate: {
-    translateX: 60
-  }
-};
-
-export const fadeInRight = {
-  animate: {
-    translateX: 60
-  }
-};
-
 export const buttonHover = {
   hover: {
     scale: 1.1,

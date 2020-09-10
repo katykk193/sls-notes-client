@@ -63,7 +63,7 @@ const NewCard = () => {
       </div>
       <Spin spinning={loading}>
         <div className="flex flex-col text-lg mb-5">
-          <label htmlFor="question" className="mb-2 font-semibold">
+          <label htmlFor="question" className="mb-2 font-semibold text-white">
             Question
           </label>
           <Input
@@ -71,13 +71,13 @@ const NewCard = () => {
             value={question}
             placeholder="Enter question..."
             onChange={handleChange('question')}
-            className="py-3 rounded text-lg font-semibold shadow-xl text-gray-700"
+            className="py-3 rounded text-lg  shadow-xl font-semibold text-gray-700"
             required
           ></Input>
         </div>
 
         <div className="flex flex-col text-lg mb-12">
-          <label htmlFor="answer" className="mb-2 font-semibold">
+          <label htmlFor="answer" className="mb-2 font-semibold text-white">
             Answer
           </label>
           <Input.TextArea

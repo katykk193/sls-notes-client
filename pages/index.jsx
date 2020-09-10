@@ -3,14 +3,14 @@ import { GlobalContext } from '../context/GlobalState';
 import Link from 'next/link';
 import Card from '../components/Card';
 import ReactCardFlip from 'react-card-flip';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlus,
   faChevronLeft,
   faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
-import { fadeInUp, fadeInRight, fadeInLeft, buttonHover } from '../animations';
+import { buttonHover } from '../animations';
 import { getCards } from '../services';
 import LoadingCard from '../components/LoadingCard';
 import EmptyCard from '../components/EmptyCard';
@@ -19,7 +19,7 @@ import useCrash from '../components/useCrash';
 const Home = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [variants, setVariants] = useState(0);
-  const [cardAnimation, setCardAnimation] = useState('');
+  const [opacity, setOpacity] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const { currentNo, updateCurrentNo, cards, updateCards } = useContext(
@@ -31,14 +31,6 @@ const Home = () => {
   useEffect(() => {
     loadCards();
   }, [cards.length]);
-
-  useEffect(() => {
-    // setVariants(0);
-    return () => {
-      console.log(variants);
-      // setVariants(0);
-    };
-  }, [currentNo]);
 
   const loadCards = async () => {
     const res = await getCards();
@@ -57,20 +49,20 @@ const Home = () => {
     setIsFlipped(false);
     const newCurrentNo = currentNo === 1 ? cards.length : currentNo - 1;
     updateCurrentNo(newCurrentNo);
-    // setTranslation(translation - 60);
-    setVariants(variants - 5);
-    console.log(variants);
-    // setCardAnimation('left');
+    const newVariants = currentNo % 2 ? -60 : -60.0001;
+    const newOpacity = currentNo % 2 ? 1 : 0.99;
+    setVariants(newVariants);
+    setOpacity(newOpacity);
   };
 
   const handleClickRight = () => {
     setIsFlipped(false);
     const newCurrentNo = currentNo === cards.length ? 1 : currentNo + 1;
     updateCurrentNo(newCurrentNo);
-    // setTranslation(translation + 60);
-    setVariants(variants + 5);
-    console.log(variants);
-    // setCardAnimation('right');
+    const newVariants = currentNo % 2 ? 60 : 60.0001;
+    const newOpacity = currentNo % 2 ? 1 : 0.99;
+    setVariants(newVariants);
+    setOpacity(newOpacity);
   };
 
   return (
@@ -97,10 +89,11 @@ const Home = () => {
       ) : cards.length ? (
         <>
           <motion.div
-          // exit={{ opacity: 0 }}
-          // initial="initial"
-          // animate="animate"
-          // variants={variants}
+            animate={{
+              x: [variants, 0],
+              transition: { duration: 0.5 },
+              opacity: [0, opacity]
+            }}
           >
             <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
               <Card
@@ -121,16 +114,7 @@ const Home = () => {
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </motion.button>
-            <motion.div
-              exit={{ opacity: 1 }}
-              initial={{ translateX: variants - variants }}
-              animate={{
-                translateX: variants,
-                opacity: 0
-              }}
-            >
-              {currentNo}
-            </motion.div>
+            <div>{currentNo}</div>
             <div>/</div>
             <div>{cards.length}</div>
             <motion.button

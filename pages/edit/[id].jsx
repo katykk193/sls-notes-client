@@ -73,7 +73,7 @@ const EditCard = () => {
       </div>
       <Spin spinning={loading}>
         <div className="flex flex-col text-lg mb-5">
-          <label htmlFor="question" className="mb-2 font-semibold">
+          <label htmlFor="question" className="mb-2 font-semibold text-white">
             Question
           </label>
           <Input
@@ -81,13 +81,13 @@ const EditCard = () => {
             value={question}
             placeholder="Enter question..."
             onChange={handleQuestionChange}
-            className="rounded text-lg font-semibold shadow-xl text-gray-700"
+            className="rounded text-lg font-semibold shadow-xl text-gray-700 p-5"
             required
           ></Input>
         </div>
 
         <div className="flex flex-col text-lg mb-12">
-          <label htmlFor="answer" className="mb-2 font-semibold">
+          <label htmlFor="answer" className="mb-2 font-semibold text-white">
             Answer
           </label>
           <Input.TextArea
@@ -96,7 +96,7 @@ const EditCard = () => {
             value={answer}
             placeholder="Enter Answer..."
             onChange={handleAnswerChange}
-            className="rounded text-lg font-semibold shadow-xl text-gray-700"
+            className="rounded text-lg font-semibold shadow-xl text-gray-700 p-5"
             required
           ></Input.TextArea>
         </div>
