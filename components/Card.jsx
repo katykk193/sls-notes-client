@@ -68,10 +68,10 @@ const Card = ({
             <div className="ml-1">Flip</div>
           </div>
 
-          <div className="text-sm md:text-lg lg:text-xl h-full">
-            <div className="h-full flex items-safe-center overflow-y-auto">
+          <div className="text-sm md:text-lg lg:text-xl h-full ">
+            <p className="h-full overflow-y-auto flex items-center">
               {question ? title : content}
-            </div>
+            </p>
           </div>
 
           {question ? (
