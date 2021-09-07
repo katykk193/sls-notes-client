@@ -2,13 +2,15 @@ import { useState, useContext } from 'react';
 import Router from 'next/router';
 import { SyncOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { buttonHover } from '../animations';
 import { GlobalContext } from '../context/GlobalState';
 import { getCards, deleteCard } from '../services';
 import { Modal, Spin } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  ExclamationCircleOutlined,
+  DeleteFilled,
+  EditFilled
+} from '@ant-design/icons';
 
 const { confirm } = Modal;
 
@@ -81,7 +83,7 @@ const Card = ({
               className="absolute left-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
               onClick={showConfirm}
             >
-              <FontAwesomeIcon icon={faTrash} />
+              <DeleteFilled />
             </motion.button>
           ) : null}
           {question ? (
@@ -91,7 +93,7 @@ const Card = ({
               className="absolute right-0 bottom-0 mx-4 my-3 text-2xl text-gray-700"
               onClick={handleEdit}
             >
-              <FontAwesomeIcon icon={faEdit} />
+              <EditFilled />
             </motion.button>
           ) : null}
         </div>

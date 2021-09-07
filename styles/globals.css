@@ -33,3 +33,7 @@ button:focus {
 input:focus {
   outline: 0;
 }
+
+svg {
+  vertical-align: baseline;
+}

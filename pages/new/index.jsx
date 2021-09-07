@@ -3,11 +3,10 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Input, Spin } from 'antd';
 import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { addCard } from '../../services';
 import useCrash from '../../components/useCrash';
 import { buttonHover } from '../../animations';
+import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 
 const NewCard = () => {
   const [state, setState] = useState({
@@ -57,7 +56,7 @@ const NewCard = () => {
             whileHover="hover"
             className="border rounded-full w-10 h-10 ml-3 text-xl flex justify-center items-center rounded-xl "
           >
-            <FontAwesomeIcon icon={faTimes} />
+            <CloseOutlined />
           </motion.button>
         </Link>
       </div>
@@ -98,7 +97,7 @@ const NewCard = () => {
             htmlType="submit"
             className="border px-4 py-2 rounded-full flex justify-center items-center font-semibold"
           >
-            <FontAwesomeIcon icon={faPlus} />
+            <PlusOutlined />
             <div className="ml-2">Add Card</div>
           </motion.button>
         </div>

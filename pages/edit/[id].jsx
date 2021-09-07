@@ -3,11 +3,10 @@ import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { Input, Spin } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { getCard, editCard } from '../../services';
 import useCrash from '../../components/useCrash';
 import { buttonHover } from '../../animations';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
 const EditCard = () => {
   const [question, setQuestion] = useState('');
@@ -67,7 +66,7 @@ const EditCard = () => {
             whileHover="hover"
             className="border rounded-full w-10 h-10 ml-3 text-xl flex justify-center items-center rounded-xl "
           >
-            <FontAwesomeIcon icon={faTimes} />
+            <CloseOutlined />
           </motion.button>
         </Link>
       </div>
@@ -108,7 +107,7 @@ const EditCard = () => {
             htmlType="submit"
             className="border px-4 py-2 rounded-full flex justify-center items-center font-semibold"
           >
-            <FontAwesomeIcon icon={faCheck} />
+            <CheckOutlined />
             <div className="ml-2">Update Card</div>
           </motion.button>
         </div>

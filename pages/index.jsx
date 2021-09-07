@@ -1,15 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
+import { LeftOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
 import { GlobalContext } from '../context/GlobalState';
 import Link from 'next/link';
 import Card from '../components/Card';
 import ReactCardFlip from 'react-card-flip';
 import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlus,
-  faChevronLeft,
-  faChevronRight
-} from '@fortawesome/free-solid-svg-icons';
 import { buttonHover } from '../animations';
 import { getCards } from '../services';
 import LoadingCard from '../components/LoadingCard';
@@ -22,9 +17,8 @@ const Home = () => {
   const [opacity, setOpacity] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  const { currentNo, updateCurrentNo, cards, updateCards } = useContext(
-    GlobalContext
-  );
+  const { currentNo, updateCurrentNo, cards, updateCards } =
+    useContext(GlobalContext);
 
   const setCrash = useCrash();
 
@@ -78,7 +72,7 @@ const Home = () => {
             whileHover="hover"
             className="border absolute right-0 px-4 py-2 rounded-full flex justify-center items-center font-semibold"
           >
-            <FontAwesomeIcon icon={faPlus} />
+            <PlusOutlined />
             <div className="ml-2">New Card</div>
           </motion.button>
         </Link>
@@ -112,7 +106,7 @@ const Home = () => {
               className="mr-5 border rounded-full h-10 w-10 text-white text-md"
               onClick={handleClickLeft}
             >
-              <FontAwesomeIcon icon={faChevronLeft} />
+              <LeftOutlined />
             </motion.button>
             <div>{currentNo}</div>
             <div>/</div>
@@ -123,7 +117,7 @@ const Home = () => {
               className="ml-5 border rounded-full h-10 w-10 text-white text-md"
               onClick={handleClickRight}
             >
-              <FontAwesomeIcon icon={faChevronRight} />
+              <RightOutlined />
             </motion.button>
           </div>
         </>
